@@ -32,15 +32,9 @@ struct ContentView: View {
                 Spacer()
                 
                 HStack {
-                    Image("fruit\(slot1)")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                    Image("fruit\(slot2)")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                    Image("fruit\(slot3)")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
+                    slotView(fruitNumber: slot1)
+                    slotView(fruitNumber: slot2)
+                    slotView(fruitNumber: slot3)
                 }.padding()
                 
                 Spacer()
@@ -76,5 +70,16 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+struct slotView: View {
+    
+    var fruitNumber: Int
+    
+    var body: some View {
+        Image("fruit\(fruitNumber)")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
     }
 }
