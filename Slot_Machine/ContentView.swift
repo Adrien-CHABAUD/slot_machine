@@ -9,13 +9,14 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var slot1 = 1
-    @State private var slot2 = 2
-    @State private var slot3 = 3
+    
+    @State private var slots = [1, 2, 3]
+    
+    @State private var backgrounds = [Color.white, Color.white, Color.white]
     
     @State private var coins = 1000
     private var betAmount = 5
-        
+    
     var body: some View {
         
         ZStack {
@@ -42,9 +43,12 @@ struct ContentView: View {
                         .foregroundColor(.white)
                         .bold()
                     
+                    
                     Image(systemName: "star.leadinghalf.filled")
                         .foregroundColor(.yellow)
                 }.scaleEffect(2)
+                
+                Spacer()
                 
                 // Amount of coins
                 Text("Coins: \(coins)")
@@ -52,27 +56,58 @@ struct ContentView: View {
                     .padding(.all, 10)
                     .background(Color.white.opacity(0.5))
                     .cornerRadius(20)
-                    
+                
                 
                 Spacer()
                 
                 HStack {
-                    slotView(fruitNumber: slot1)
-                    slotView(fruitNumber: slot2)
-                    slotView(fruitNumber: slot3)
-                }.padding()
+                    Spacer()
+                    
+                    CardView(fruitNumber: $slots[0],
+                             colorBack: $backgrounds[0])
+                    
+                    CardView(fruitNumber: $slots[1],
+                             colorBack: $backgrounds[1])
+                    
+                    CardView(fruitNumber: $slots[2],
+                             colorBack: $backgrounds[2])
+                    
+                    Spacer()
+                }
                 
                 Spacer()
                 
                 Button(action: {
-                    self.slot1 = Int.random(in: 1...3)
-                    self.slot2 = Int.random(in: 1...3)
-                    self.slot3 = Int.random(in: 1...3)
+                    // Set the backgrounds back to white
+                    // self.backgrounds[0] = Color.white
+                    // self.backgrounds[1] = Color.white
+                    // self.backgrounds[2] = Color.white
                     
-                    if self.slot1 == self.slot2 && self.slot1 == self.slot3 {
-                        self.coins = 10 * 5
+                    self.backgrounds = self.backgrounds.map { _ in
+                        Color.white
+                    }
+                    
+                    // Give random numbers to each member of the array
+                    self.slots = self.slots.map { _ in
+                        Int.random(in: 1...3)
+                    }
+                    
+                    if self.slots[0] == self.slots[1] && self.slots[0] == self.slots[2] {
+                        // Won
+                        
+                        // Update coins
+                        self.coins += 10 * 5
+                        
+                        // Change background color
+                        self.backgrounds = self.backgrounds.map { _ in
+                            Color.green
+                        }
+                        
                     } else {
-                        self.coins = 20 * 5
+                        // Lost
+                        
+                        // Update the coins
+                        self.coins -= 1
                         // Add message if coins equal 0
                     }
                     
@@ -86,7 +121,7 @@ struct ContentView: View {
                 }).shadow(color:.gray, radius: 5, x: 0, y: 0)
                 
                 Spacer()
-
+                
             }
             
         }
@@ -99,15 +134,15 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct slotView: View {
-    
-    var fruitNumber: Int
-    
-    var body: some View {
-        Image("fruit\(fruitNumber)")
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .background(Color.green.opacity(0.3))
-            .cornerRadius(10)
-    }
-}
+//struct slotView: View {
+//
+//    var fruitNumber: Int
+//
+//    var body: some View {
+//        Image("fruit\(fruitNumber)")
+//            .resizable()
+//            .aspectRatio(contentMode: .fit)
+//            .background(Color.green.opacity(0.3))
+//            .cornerRadius(10)
+//    }
+//}
