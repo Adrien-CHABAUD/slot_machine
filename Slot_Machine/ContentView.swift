@@ -18,7 +18,15 @@ struct ContentView: View {
     var body: some View {
         
         ZStack {
-            Color(.red).ignoresSafeArea()
+            
+            // Background
+            Rectangle()
+                .foregroundColor(Color(red: 97/255, green: 176/255, blue: 132/255))
+                .edgesIgnoringSafeArea(.all)
+            
+            Rectangle()
+                .foregroundColor(Color(red: 39/255, green: 87/255, blue: 60/255)).rotationEffect(Angle(degrees: 45)).edgesIgnoringSafeArea(.all)
+            
             
             Spacer()
             
@@ -45,9 +53,10 @@ struct ContentView: View {
                     slot3 = Int.random(in: 1...3)
                     
                     if slot1 == slot2 && slot1 == slot3 {
-                        coins += 10
+                        coins += 1000
                     } else {
-                        coins -= 10
+                        coins -= 50
+                        // Add message if coins equal 0
                     }
                     
                     
