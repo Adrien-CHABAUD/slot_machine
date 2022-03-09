@@ -12,12 +12,29 @@ struct CardView: View {
     @Binding var fruitNumber:Int
     @Binding var colorBack:Color
     
+    private let transition: AnyTransition = AnyTransition.move(edge: .bottom)
+    
     var body: some View {
-        Image("fruit\(fruitNumber)")
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .background(colorBack.opacity(0.5))
-            .cornerRadius(10)
+        VStack {
+            if fruitNumber == 1 {
+                Image("fruit\(fruitNumber)")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .transition(transition)
+            } else if fruitNumber == 2{
+                Image("fruit\(fruitNumber)")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .transition(transition)
+            } else {
+                Image("fruit\(fruitNumber)")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .transition(transition)
+            }
+        }
+        .background(colorBack.opacity(0.5))
+        .cornerRadius(10)
     }
 }
 
@@ -26,3 +43,4 @@ struct CardView_Previews: PreviewProvider {
         CardView(fruitNumber: Binding.constant(2), colorBack: Binding.constant(Color.green))
     }
 }
+

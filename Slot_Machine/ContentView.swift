@@ -9,13 +9,25 @@ import SwiftUI
 
 struct ContentView: View {
     
-    
+    // Values of the slots (equal the images to put)
     @State private var slots = [1, 2, 3]
     
+    // Background of the slots
     @State private var backgrounds = [Color.white, Color.white, Color.white]
     
+    // Number of coins held
     @State private var coins = 1000
+    
+    // Result of the spin
+    @State private var win = false
+    
+    // Amount betted
     private var betAmount = 5
+    
+    // Show animations
+    @State private var show = false
+    // Rotate when win
+    @State private var rotate = false
     
     var body: some View {
         
@@ -25,27 +37,26 @@ struct ContentView: View {
             Rectangle()
                 .foregroundColor(Color(red: 97/255, green: 176/255, blue: 132/255))
                 .edgesIgnoringSafeArea(.all)
-            
             Rectangle()
                 .foregroundColor(Color(red: 39/255, green: 87/255, blue: 60/255)).rotationEffect(Angle(degrees: 45)).edgesIgnoringSafeArea(.all)
             
-            
             VStack {
-                
+
                 Spacer()
                 
-                // Name of the "APP"
+                // Name of the "APP" + ASF image
                 HStack{
-                    Image(systemName: "star.leadinghalf.filled")
-                        .foregroundColor(.yellow)
+                    
+                    starView(win: self.win, rotate: self.rotate)
+                    
                     
                     Text("SLOTS")
                         .foregroundColor(.white)
                         .bold()
                     
                     
-                    Image(systemName: "star.leadinghalf.filled")
-                        .foregroundColor(.yellow)
+                    starView(win: self.win, rotate: self.rotate)
+                    
                 }.scaleEffect(2)
                 
                 Spacer()
@@ -54,8 +65,12 @@ struct ContentView: View {
                 Text("Coins: \(coins)")
                     .foregroundColor(.white)
                     .padding(.all, 10)
-                    .background(Color.white.opacity(0.5))
+                    .background(self.win ? Color.green.opacity(0.5) : Color.white.opacity(0.5))
                     .cornerRadius(20)
+                // To not change the parameters above
+                    .animation(.none, value: self.win)
+                    .scaleEffect(self.win ? 1.5 : 1)
+                    .animation(.spring(response: 0.7, dampingFraction: 0.3), value: self.win)
                 
                 
                 Spacer()
@@ -65,12 +80,18 @@ struct ContentView: View {
                     
                     CardView(fruitNumber: $slots[0],
                              colorBack: $backgrounds[0])
+                        .rotationEffect(Angle.degrees(self.rotate ? 360 : 0))
+                        .animation(.linear, value: show)
                     
                     CardView(fruitNumber: $slots[1],
                              colorBack: $backgrounds[1])
+                        .rotationEffect(Angle.degrees(self.rotate ? 360 : 0))
+                        .animation(.linear, value: show)
                     
                     CardView(fruitNumber: $slots[2],
                              colorBack: $backgrounds[2])
+                        .rotationEffect(Angle.degrees(self.rotate ? 360 : 0))
+                        .animation(.linear, value: show)
                     
                     Spacer()
                 }
@@ -82,6 +103,7 @@ struct ContentView: View {
                     // self.backgrounds[0] = Color.white
                     // self.backgrounds[1] = Color.white
                     // self.backgrounds[2] = Color.white
+                    self.show.toggle()
                     
                     self.backgrounds = self.backgrounds.map { _ in
                         Color.white
@@ -92,11 +114,16 @@ struct ContentView: View {
                         Int.random(in: 1...3)
                     }
                     
+                    self.win = false
+                    
                     if self.slots[0] == self.slots[1] && self.slots[0] == self.slots[2] {
                         // Won
                         
+                        self.rotate.toggle()
+                        
                         // Update coins
                         self.coins += 10 * 5
+                        self.win = true
                         
                         // Change background color
                         self.backgrounds = self.backgrounds.map { _ in
@@ -125,12 +152,29 @@ struct ContentView: View {
             }
             
         }
+        .animation(.easeOut, value: self.show)
+        
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+struct starView: View {
+    
+    var win: Bool
+    var rotate: Bool
+    
+    var body: some View {
+        Image(systemName: "star.leadinghalf.filled")
+            .foregroundColor(.yellow)
+            .animation(.none, value: win)
+            .scaleEffect(win ? 1.2 : 1)
+            .rotationEffect(Angle.degrees(rotate ? 360 : 0))
+            .animation(.linear, value: win)
     }
 }
 
