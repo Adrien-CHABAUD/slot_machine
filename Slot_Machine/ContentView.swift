@@ -99,11 +99,19 @@ struct ContentView: View {
                 Spacer()
                 
                 Button(action: {
+                    
+                    // Update the coins
+                    self.coins -= self.betAmount * 1
+                    
+                    // Update the status
+                    self.win = false
+                    
+                    self.show.toggle()
+                    
                     // Set the backgrounds back to white
                     // self.backgrounds[0] = Color.white
                     // self.backgrounds[1] = Color.white
                     // self.backgrounds[2] = Color.white
-                    self.show.toggle()
                     
                     self.backgrounds = self.backgrounds.map { _ in
                         Color.white
@@ -114,29 +122,7 @@ struct ContentView: View {
                         Int.random(in: 1...3)
                     }
                     
-                    self.win = false
-                    
-                    if self.slots[0] == self.slots[1] && self.slots[0] == self.slots[2] {
-                        // Won
-                        
-                        self.rotate.toggle()
-                        
-                        // Update coins
-                        self.coins += 10 * 5
-                        self.win = true
-                        
-                        // Change background color
-                        self.backgrounds = self.backgrounds.map { _ in
-                            Color.green
-                        }
-                        
-                    } else {
-                        // Lost
-                        
-                        // Update the coins
-                        self.coins -= 1
-                        // Add message if coins equal 0
-                    }
+                    self.win = isMatch(0, 1, 2)
                     
                 }, label: {
                     Text("SPIN")
@@ -154,6 +140,28 @@ struct ContentView: View {
         }
         .animation(.easeOut, value: self.show)
         
+    }
+    
+    // Returns a Bool indicating if the images are the same or not
+    func isMatch(_ index1:Int, _ index2:Int, _ index3:Int) -> Bool{
+        
+        if self.slots[index1] == self.slots[index2] && self.slots[index1] == self.slots[index3] {
+            // Win
+            
+            // Launch rotate animations
+            self.rotate.toggle()
+            
+            // Update coins
+            self.coins += 10 * self.betAmount
+            
+            // Change background colors of the images
+            self.backgrounds = self.backgrounds.map { _ in
+                Color.green
+            }
+            return true
+        }
+        
+        return false
     }
 }
 
