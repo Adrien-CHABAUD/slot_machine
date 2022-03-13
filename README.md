@@ -4,7 +4,7 @@
   Author: Adrien CHABAUD
   -->
   
-# Slot Machine iOS App
+# Slot Machine ![iOS Badge](https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white) ![Swift Badge](https://img.shields.io/badge/Swift%20Version-5-orange) 
 
 This project is about a simple slot machine using SwiftUI!
 
