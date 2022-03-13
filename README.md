@@ -6,7 +6,7 @@
   
 # Slot Machine iOS App
 
-This project is about a simple slot machine !
+This project is about a simple slot machine using SwiftUI!
 
 ## Table of contents
 * [General Info](#general-info)
