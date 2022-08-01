@@ -1,6 +1,6 @@
 <!--
   Title: Slot MAchine
-  Description: iOS App of slot machine type, made using SWIFTUI
+  Description: iOS App of slot machine type, made using SWIFT and Storyboard
   Author: Adrien CHABAUD
   -->
   
